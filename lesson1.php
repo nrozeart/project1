@@ -9,9 +9,7 @@
 placeToReturn:
     $year = readline('В каком году в Казани прошла XXVII Всемирная летняя Универсиаада?');
 
-        if ($year == 1810) {
-            echo ("Неверный ответ" . PHP_EOL);
-        } elseif ($year == 1999) {
+        if ($year == 1810 || $year == 1999) {
             echo ("Неверный ответ" . PHP_EOL);
         } elseif ($year == 2013) {
             echo ("Позравляем! Это верный ответ!" . PHP_EOL);
@@ -28,12 +26,17 @@ placeToReturn:
 $taskQuantity = readline("Сколько задач у Вас запланировано на день?");
 $timeForTask = 0;
 
+$sumTimeForTask = 0;
+$allTasks = '';
+
 for ($i = 0; $i < $taskQuantity; $i++) {
     $task = readline("Какая задача стоит перед вами сегодня?");
-    $timeForTask = $timeForTask + readline("Сколько примерно времени эта задача займет?");
-    echo ("Задача -$task - ($timeForTask ч)" . PHP_EOL);
+    $timeForTask = readline("Сколько примерно времени эта задача займет?");
+    $str = ' - ' . $task . ' - ' . $timeForTask . ' ч. ' . PHP_EOL;
+    $allTasks .= $str;
+    $sumTimeForTask += $timeForTask;
 };
 
 echo ("Количество запланированных задач на сегодня - $taskQuantity
-
-Примерное время выполнения плана = $timeForTask ч");
+$allTasks;
+Примерное время выполнения плана = $sumTimeForTask ч.");
