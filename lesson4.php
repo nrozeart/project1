@@ -7,7 +7,7 @@
 $numbers = [4, 5, 1, 4, 7, 8, 15, 6, 71, 45, 2];
 $numbers2 = [45, 52, 100, 44, 7, 8, 415, 6, 721, 88, 5];
 
-$evenOrOdd = function (int $number) {
+$evenOrOdd = function (int $number): string {
   if ($number % 2 == 0) {
       return $value = "четное";
   } else {
@@ -25,23 +25,90 @@ print_r($result);
 // avg — среднее арифметическое всех чисел массива;
 
 function compareNumbers(array $array) :array {
-    $maxNumber = $array[0];
-    $minNumber = $array[0];
-    $sum= 0;
-    $avgNumber = 0;
+    return ["max" => max($array),"min" => min($array),"avg" => array_sum($array) / count($array)];
 
-    foreach($array as $item) {
-        if ($item > $maxNumber) {
-            $maxNumber = $item;
-        };
-        if ($item < $minNumber) {
-            $minNumber = $item;
-        };
-        $sum += $item;
-        $avgNumber = round($sum/count($array), 2);
-    };
-    $result = ["max" => $maxNumber,"min" => $minNumber,"avg" => $avgNumber];
-    return $result;
+//    Вариант 2:
+//    $maxNumber = $array[0];
+//    $minNumber = $array[0];
+//    $sum= 0;
+//    $avgNumber = 0;
+//
+//    foreach($array as $item) {
+//        if ($item > $maxNumber) {
+//            $maxNumber = $item;
+//        };
+//        if ($item < $minNumber) {
+//            $minNumber = $item;
+//        };
+//        $sum += $item;
+//        $avgNumber = round($sum/count($array), 2);
+//    };
+//    return ["max" => $maxNumber,"min" => $minNumber,"avg" => $avgNumber];
 };
 
 print_r(compareNumbers($numbers2));
+
+// 3. *Дан многомерный массив, представляющий собой коробку, в которую сложены предметы.
+// Помимо обычных предметов, каждая коробка может содержать другие коробки. Необходимо написать функцию, проверяющую,
+// есть ли предмет в цепочке коробок или нет.
+//Функция должна принимать два аргумента: стоковое название предмета для поиска (например: «Ключ») и изначальный массив.
+// Возвращаемое значение — bool, где true означает наличие предмета, а false его отсутствие. Механизм поиска должен
+// быть реализован с применением рекурсии. Пример массива:
+
+$box = [
+    [
+        0 => 'Тетрадь',
+        1 => 'Книга',
+        2 => 'Настольная игра',
+        3 => [
+            'Настольная игра',
+            'Настольная игра',
+        ],
+        4 => [
+            [
+                'Ноутбук',
+                'Зарядное устройство'
+            ],
+            [
+                'Компьютерная мышь',
+                'Набор проводов',
+                [
+                    'Фотография',
+                    'Картина'
+                ]
+            ],
+            [
+                'Инструкция',
+                [
+                    'Ключ'
+                ]
+            ]
+        ]
+    ],
+    [
+        0 => 'Пакет кошачьего корма',
+        1 => [
+            'Музыкальный плеер',
+            'Книга'
+            ]
+    ]
+];
+
+$input = (string)readline('Введите предмет для поиска: ');
+function search(string $searchThing, array $searchArray): bool
+{
+    foreach ($searchArray as $value) {
+        if (is_array($value)) {
+            if (search($searchThing, $value)) {
+                return true;
+            }
+        } else {
+            if ($searchThing === $value) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+echo search($input, $box) ? 'true' : 'false';
