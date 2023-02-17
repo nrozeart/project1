@@ -8,6 +8,7 @@
 //также обновляющий свойства dateUpdated и dateDone.
 
 require_once 'User.php';
+require_once 'Comment.php';
 
 class Task {
     private string $description;
@@ -17,6 +18,7 @@ class Task {
     private int $priority;
     private bool $isDone = false;
     private User $user;
+    private array $comments = [];
 
     public function __construct(User $user)
     {
@@ -87,4 +89,7 @@ class Task {
     {
         $this->user = $user;
     } //обязательное
+    public function addComment(Comment $comment) {
+        $this->comments[] = $comment;
+    }
 }
