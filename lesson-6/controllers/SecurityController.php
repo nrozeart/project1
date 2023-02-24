@@ -1,20 +1,28 @@
 <?php
-
-use model\UserProvider;
-
-require_once 'model/UserProvider.php';
 $error = null;
-if (isset($_POST['username'], $_POST['password'])) {
-    ['username' => $username, 'password' => $password] = $_POST;
-    $userProvider = new UserProvider();
-    $user = $userProvider->getByUsernameAndPassword($username, $password);
-    if ($user === null) {
-        $error = 'Пользователь с указанными учетными данными не найден';
-    } else {
-        $_SESSION['user'] = $user;
+if (isset($_GET['action'])) {
+
+    if ($_GET['action'] === 'logout') {
+        unset($_SESSION['user']);
+        header('Location: /');
+    } elseif ($_GET['action'] === 'signin') {
+        if (isset($_SESSION['user'])) {
+            header('Location: /');
+        } elseif (isset($_POST['username'], $_POST['password'])) {
+
+            ['username' => $username, 'password' => $password] = $_POST;
+
+            $user = UserProvider::getByUsernameAndPassword($username, $password);
+
+            if (is_null($user)) {
+                $error = 'Пользователь с указанными учетными данными не найден';
+            } else {
+                $_SESSION['user'] = $user;
+                header('Location: /');
+            }
+
+        }
     }
 }
-if (isset($_SESSION['user'])) {
-    header('Location: /');
-}
 require_once 'view/signin.php';
+
